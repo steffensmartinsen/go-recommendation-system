@@ -2,10 +2,13 @@ package dataset
 
 import (
 	"encoding/csv"
-	"fmt"
 	"log"
 	"os"
+	"strconv"
 )
+
+// MovieVector is a map of movie IDs to a slice of tags
+var MovieVector map[string][]string
 
 func CleanDataset() {
 
@@ -26,7 +29,16 @@ func CleanDataset() {
 		return
 	}
 
-	fmt.Println(records[0])
-	fmt.Println(records[1])
+	MovieVector := make(map[string][]string)
+
+	// Map the movie ID to the tags
+	for _, record := range records {
+		MovieVector[record[1]] = append(MovieVector[record[1]], record[2])
+	}
+
+	// Print the 10 first movie IDs and tags
+	for i := 0; i < 10; i++ {
+		log.Println(MovieVector[strconv.Itoa(i)])
+	}
 
 }
