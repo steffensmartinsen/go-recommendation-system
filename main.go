@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import "go-recommendation-system/dataset"
 
 func main() {
-	fmt.Println("Hello, World!")
+
+	dataset.CleanDataset()
+
 }
