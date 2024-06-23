@@ -9,7 +9,9 @@ import (
 func main() {
 
 	start := time.Now()
-	dataset.CleanDataset()
+	tags := dataset.GenerateTagVector()
+
+	log.Printf(tags[0])
 
 	elapsed := time.Since(start)
 	log.Printf("Data cleaning took %s", elapsed)

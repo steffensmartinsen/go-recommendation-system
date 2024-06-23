@@ -2,20 +2,16 @@ package dataset
 
 import (
 	"encoding/csv"
-	"fmt"
 	"log"
 	"os"
 )
 
-// MovieVector is a map of movie IDs to a slice of tags
-var MovieVector map[string][]string
-
-func CleanDataset() {
+func GenerateTagVector() []string {
 
 	csvfile, err := os.Open("dataset/tags.csv")
 	if err != nil {
 		log.Println(err)
-		return
+		return nil
 	}
 	defer csvfile.Close()
 
@@ -26,9 +22,10 @@ func CleanDataset() {
 	records, err := r.ReadAll()
 	if err != nil {
 		log.Println(err)
-		return
+		return nil
 	}
 
+	// Create a map to store the movie ID and the tags
 	MovieVector := make(map[string][]string)
 
 	// Map the movie ID to the tags
@@ -38,10 +35,16 @@ func CleanDataset() {
 		}
 	}
 
-	for k, v := range MovieVector {
-		fmt.Printf("Key: %s, Value: %v\n", k, v)
+	tagVector := []string{}
+	for _, tags := range MovieVector {
+		for _, tag := range tags {
+			if !StringInSlice(tag, tagVector) {
+				tagVector = append(tagVector, tag)
+			}
+		}
 	}
 
+	return tagVector
 }
 
 // StringInSlice function to check if a string is in a slice of strings
