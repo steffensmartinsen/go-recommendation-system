@@ -2,9 +2,9 @@ package dataset
 
 import (
 	"encoding/csv"
+	"fmt"
 	"log"
 	"os"
-	"strconv"
 )
 
 // MovieVector is a map of movie IDs to a slice of tags
@@ -33,12 +33,23 @@ func CleanDataset() {
 
 	// Map the movie ID to the tags
 	for _, record := range records {
-		MovieVector[record[1]] = append(MovieVector[record[1]], record[2])
+		if !StringInSlice(record[2], MovieVector[record[1]]) {
+			MovieVector[record[1]] = append(MovieVector[record[1]], record[2])
+		}
 	}
 
-	// Print the 10 first movie IDs and tags
-	for i := 0; i < 10; i++ {
-		log.Println(MovieVector[strconv.Itoa(i)])
+	for k, v := range MovieVector {
+		fmt.Printf("Key: %s, Value: %v\n", k, v)
 	}
 
+}
+
+// StringInSlice function to check if a string is in a slice of strings
+func StringInSlice(str string, list []string) bool {
+	for _, v := range list {
+		if v == str {
+			return true
+		}
+	}
+	return false
 }
